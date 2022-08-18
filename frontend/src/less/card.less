@@ -1,0 +1,55 @@
+@import "./var";
+
+.card{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+
+    width: 100%;
+
+    &Item{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        position: relative;
+
+        width: 100%;
+        height: auto;
+
+        background-color: @mainColor;
+        border: 2px solid @subColor;
+        border-radius: 14px;
+
+        color: #fff;
+
+        box-shadow: 2px 2px 2px @subColor;
+
+        margin-bottom: 20px;
+
+        aspect-ratio: 1 / 1;
+
+        transition: color .2s linear,  background .2s linear, border .2s linear, box-shadow .2s linear;
+
+        &:hover{
+            background-color: @darkenBackground;
+            border-color: @darkenShadow;
+            box-shadow: 2px 2px 2px @darkenShadow;
+            color: @darkenText;
+
+            cursor: pointer;
+        }
+    }
+
+    &Item.active{
+        background-color: @darkenBackground;
+        border-color: @darkenShadow;
+        box-shadow: 2px 2px 2px @darkenShadow;
+        color: @darkenText;
+
+        cursor: pointer;
+    }
+}
+
