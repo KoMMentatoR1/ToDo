@@ -6,6 +6,7 @@ import { db_connect } from "./db_connect.js";
 import userRouter from "./routers/userRouter.js";
 import { errorMiddleware } from "./middlewares/error-middleware.js";
 import taskListRouter from "./routers/taskListRouter.js";
+import taskRouter from "./routers/taskRouter.js";
 
 
 const app = express()
@@ -20,6 +21,7 @@ app.use(cors({
 }))
 app.use("/user", userRouter)
 app.use("/lists", taskListRouter)
+app.use("/task", taskRouter)
 app.use(errorMiddleware)
 
 const start = async () => {

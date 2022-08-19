@@ -1,4 +1,4 @@
-class TokenListDto {
+class TaskListDto {
     title;
     id;
     userId;
@@ -10,4 +10,4 @@ class TokenListDto {
     }
 }
 
-export default TokenListDto;
+export default TaskListDto;

@@ -1,25 +1,45 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import "../less/cardModal.less"
+import "../less/menu.less"
 import { ITask } from "../types/types";
 import Task from './Task';
+import AddIcon from '@mui/icons-material/Add';
+import { ChangeEvent, FC, useState, useEffect } from 'react';
+import { FormControl, InputLabel, OutlinedInput, TextField } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+import { useAction } from '../hooks/useAction';
+import { useTypeSelector } from '../hooks/useTypeSelector';
 
 interface IModal {
   open: boolean,
   onClose: () => void,
   title: string,
+  idList: number
 }
 
-const TaskListModal = ({open, onClose, title}: IModal) => {
+const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
 
-  const task:Array<ITask> = [
-    {label: '123', checked: true},
-    {label: '1234', checked: false},
-    {label: '123', checked: true},
-    {label: '123', checked: true},
-    {label: '123', checked: true},
-    {label: '123', checked: true},
-  ]
+  const {getTask, addTask} = useAction()
+  const {tasks} = useTypeSelector(state => state.task)
+
+  useEffect(() => {
+    if(open){
+      getTask(idList)
+      console.log(tasks);
+    }
+  }, [open])
+
+  const [inputActive, setInputActive] = useState<boolean>(false)
+  const [value, setValue] = useState<string>("")
+
+  const addTaskClick = () => {
+    addTask(false, value, idList),
+    setInputActive(false)
+  }
 
   return (
     <div>
@@ -32,9 +52,45 @@ const TaskListModal = ({open, onClose, title}: IModal) => {
             {title}
           </div>
           <form className="cardModalForm">
-            {task.map((task) => (
-              <Task label={task.label} checked={task.checked}/>
+            {tasks.map((task) => (
+              <Task
+                id={task.id}
+                complite={task.complite}
+                body={task.body}
+                TaskListModelId={task.TaskListModelId}
+              />
             ))}
+            
+            {inputActive
+              ?(
+                <FormControl variant="outlined"> 
+                <InputLabel htmlFor="addTaskInput">Введите новую задачу</InputLabel>
+                <OutlinedInput
+                  value={value}
+                  onChange={(e:ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+                  id="addTaskInput"
+                  label="Введите новую задачу"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => addTaskClick()}>
+                        <DoneIcon color="success" />
+                      </IconButton>
+                      <IconButton onClick={() => setInputActive(false)} >
+                        <CloseIcon color="error" />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              )
+              :(
+                <AddIcon
+                sx={{transition: "color .1s linear,  background .1s linear, border .1s linear, box-shadow .1s linear"}}
+                className="menuItem"
+                onClick={() => setInputActive(true)}
+              />
+              )
+            }
           </form>
         </Box>
       </Modal>  

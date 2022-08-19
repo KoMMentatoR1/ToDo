@@ -1,5 +1,5 @@
 import {Op} from "sequelize"
-import TokenListDto from "../dtos/tokenList-dto.js"
+import TokenListDto from "../dtos/taskList-dto.js"
 import TaskListModel from "../models/taskListModel.js"
 
 class taskListService{
