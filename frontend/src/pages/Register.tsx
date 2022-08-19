@@ -4,11 +4,15 @@ import "../less/register.less"
 import useInput from '../hooks/useInput'
 import { IInput } from '../types/types'
 import { useNavigate } from "react-router-dom"
-import AuthService from '../services/AuthService'
 import { useAction } from '../hooks/useAction'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import LoaderWithBackground from '../components/LoaderWithBackground'
+import PasswordInput from '../components/PasswordInput'
 
 const Register: FC = () => {
     const navigator = useNavigate()
+
+    const {isLoading} = useTypeSelector(state => state.user)
 
     const email: IInput = useInput("", {empty: false, email: true})
     const password: IInput = useInput("", {empty: false, minLength: 8})
@@ -31,6 +35,10 @@ const Register: FC = () => {
     const auth = async (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
         registration(email.data, password.data)
+    }   
+
+    if(isLoading) {
+        return <LoaderWithBackground />
     }
 
     return (
@@ -52,32 +60,8 @@ const Register: FC = () => {
                             required
                         />
                     </div>
-                    <div className='registerInput'>
-                        <TextField
-                            error={password.isDirty && (!password.isValid || passwordError)}
-                            onChange={password.onChange}
-                            onBlur={password.onBlur}
-                            value={password.data}
-                            helperText={password.isDirty && password.errorMessage || passwordError && "пароли не совпадают"}
-                            sx={{width: "100%"}}
-                            label="Password"
-                            variant="outlined"
-                            required
-                        />
-                    </div>
-                    <div className='registerInput'>
-                        <TextField
-                            error={repeatPassword.isDirty && (!repeatPassword.isValid || passwordError)} 
-                            onChange={repeatPassword.onChange}
-                            onBlur={repeatPassword.onBlur}
-                            value={repeatPassword.data}
-                            helperText={repeatPassword.isDirty && repeatPassword.errorMessage || passwordError && "пароли не совпадают"}
-                            sx={{width: "100%"}}
-                            label="Repeat password"
-                            variant="outlined"
-                            required 
-                    />
-                    </div>
+                    <PasswordInput label='Пароль *' password={password} errors={[{state: passwordError, message: "Пароли не совпадают"}]}/>
+                    <PasswordInput label='Повторите пароль *' password={repeatPassword} errors={[{state: passwordError, message: "Пароли не совпадают"}]}/>
                 </div>
                 <div className="buttonContainer">
                     <Button onClick={(e) => auth(e)} disabled={!password.isValid || !email.isValid || !repeatPassword.isValid || passwordError} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">register</Button>

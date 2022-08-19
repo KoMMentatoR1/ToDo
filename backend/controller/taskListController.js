@@ -14,7 +14,6 @@ class taskListController {
     static async get(req, res, next) {
         try{
             const { userId } = req.body
-            console.log(userId);
             const lists = await taskListService.get(userId)
             return  res.json(lists)
         } catch(e){

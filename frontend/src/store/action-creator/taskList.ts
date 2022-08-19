@@ -20,7 +20,7 @@ export const getTaskList = (userId: number) => {
     return async (dispatch: Dispatch<TaskListAction>) => {
         try {
             dispatch({type: TaskListTypes.FETCH_TASKLIST})
-            const response = await TaskListService.get(userId)            
+            const response = await TaskListService.get(userId)
             dispatch({type: TaskListTypes.FETCH_TASKLIST_GET, payload: response.data})
         } catch (e) {
             dispatch({

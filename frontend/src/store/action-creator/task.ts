@@ -20,8 +20,8 @@ export const getTask = (TaskListModelId: number) => {
     return async (dispatch: Dispatch<TaskAction>) => {
         try {
             dispatch({type: TaskTypes.FETCH_TASK})
-            const response = await TaskService.get(TaskListModelId)            
-            dispatch({type: TaskTypes.FETCH_TASK_GET, payload: response.data})
+            const response = await TaskService.get(TaskListModelId)   
+            dispatch({type: TaskTypes.FETCH_TASK_GET, payload: response.data})       
         } catch (e) {
             dispatch({
                 type: TaskTypes.FETCH_TASK_ERROR,

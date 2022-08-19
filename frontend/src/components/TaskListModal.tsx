@@ -13,6 +13,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 import { useAction } from '../hooks/useAction';
 import { useTypeSelector } from '../hooks/useTypeSelector';
+import Loader from './Loader';
 
 interface IModal {
   open: boolean,
@@ -24,12 +25,11 @@ interface IModal {
 const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
 
   const {getTask, addTask} = useAction()
-  const {tasks} = useTypeSelector(state => state.task)
+  const {tasks, isLoading} = useTypeSelector(state => state.task)
 
   useEffect(() => {
     if(open){
       getTask(idList)
-      console.log(tasks);
     }
   }, [open])
 
@@ -40,27 +40,32 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
     addTask(false, value, idList),
     setInputActive(false)
   }
-
+  
   return (
     <div>
       <Modal
-        open={open}
+        open={isLoading ? true : open}
         onClose={() => onClose()}
       >
         <Box className='cardModal'>
           <div className='cardModalTitle'>
-            {title}
+            {isLoading ? "" : title}
           </div>
-          <form className="cardModalForm">
+          {isLoading
+          ?(<Loader />)
+          : (
+            <form className="cardModalForm">
+
             {tasks.map((task) => (
               <Task
                 id={task.id}
                 complite={task.complite}
                 body={task.body}
                 TaskListModelId={task.TaskListModelId}
+                key={task.id}
               />
             ))}
-            
+
             {inputActive
               ?(
                 <FormControl variant="outlined"> 
@@ -91,7 +96,10 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
               />
               )
             }
-          </form>
+
+            </form>
+          )
+          }
         </Box>
       </Modal>  
     </div>
