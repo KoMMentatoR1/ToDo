@@ -20,6 +20,9 @@ class UserModel extends Model {
                 activationLink: {
                     type: DataTypes.STRING
                 },
+                switchKey: {
+                    type: DataTypes.STRING
+                }
             },
             {
                 sequelize,

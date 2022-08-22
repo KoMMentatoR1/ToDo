@@ -19,6 +19,12 @@ export const toolActiveClear = () => {
     }
 }
 
+export const toolActiveProfile = () => {
+    return (dispatch: Dispatch<ToolAction>) => {
+        dispatch({type: ToolTypes.TOOL_ACTIVE_PROFILE})
+    }
+}
+
 export const toolAddModalActive = () => {
     return (dispatch: Dispatch<ToolAction>) => {
         dispatch({type: ToolTypes.TOOL_ADD_MODAL_ACTIVE})

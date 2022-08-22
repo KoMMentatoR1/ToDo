@@ -28,6 +28,22 @@ class MailService {
                 `  
         })
     }
+
+    async sendSwitchPasswordCodeMail(to, key){
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: to,
+            subject: "Код для смены пароля",
+            text: "",
+            html:
+                `
+                <div>
+                    <h1>Код для смены пароля</h1>
+                    <p>${key}</p>
+                </div>
+                `  
+        })
+    }
 }
 
 export default new MailService

@@ -4,11 +4,29 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { FC, } from "react";
 
 import { useAction } from "../hooks/useAction";
+import { useTypeSelector } from "../hooks/useTypeSelector";
+import { useNavigate } from "react-router-dom";
 
 const PersonList: FC = () => {
-    const {logout} = useAction()
+
+    const navigator = useNavigate()
+
+    const {logout, toolActiveProfile, setDefaultTool} = useAction()
+    const {isProfile} = useTypeSelector(state => state.tool)
     const exit = () => {
         logout()
+        setDefaultTool()
+    }
+
+    const personClick = () => {
+      if(isProfile) {
+        navigator("/myLists")
+        setDefaultTool()
+      }
+      else {
+        navigator("/profile")
+        toolActiveProfile()
+      }
     }
 
   return (
@@ -16,8 +34,9 @@ const PersonList: FC = () => {
         <div className="menuItemContainer">
             <PersonIcon
               sx={{transition: "color .1s linear,  background .1s linear, border .1s linear, box-shadow .1s linear"}}
-              className="menuItem"
+              className={`menuItem ${isProfile ? "active" : ""}`}
               id="person"
+              onClick={() => personClick()}
             />
         </div>
         <div className="menuItemContainer">

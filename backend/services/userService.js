@@ -61,6 +61,83 @@ class userService {
         }
     }
 
+    async switchPassword(id, password, newPassword) {
+        const user = await UserModel.findOne({where:{id}})
+
+        if (!user){
+            throw ApiError.BadRequest(`Пользователь не найден`)
+        }
+        
+        const isPassEquils = await bcrypt.compare(password, user.password)
+
+        if (!isPassEquils){
+            throw ApiError.BadRequest("Неверные старый пароль")
+        }
+
+        const hashPassword = await bcrypt.hash(newPassword, 3)
+
+        user.password = hashPassword
+
+        await user.save()
+
+        const userDto = new UserDto(user)
+        const tokens = tokenService.generateToken({...userDto})
+
+        await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
+        return {
+            ...tokens,
+            user: userDto
+        }
+    }
+
+    async forgotPassword(email) {
+        const user = await UserModel.findOne({where:{email}})
+
+        if (!user){
+            throw ApiError.BadRequest(`Пользователь не найден`)
+        }
+        
+        const key= `f${(~~(Math.random()*1e8)).toString(16)}`;
+
+        user.switchKey = key
+
+        await user.save()
+
+        await mailService.sendSwitchPasswordCodeMail(email, key);
+
+        return
+    }
+
+    async newPass(email, code, newPass) {
+        const user = await UserModel.findOne({where:{email}})
+
+        if (!user){
+            throw ApiError.BadRequest(`Пользователь не найден`)
+        }
+
+        if (user.switchKey != code){
+            throw ApiError.BadRequest(`Код не действительный`)
+        }
+
+        user.switchKey = null
+        const hashPassword = await bcrypt.hash(newPass, 3)
+
+        user.password = hashPassword
+
+        await user.save()
+
+        const userDto = new UserDto(user)
+        const tokens = tokenService.generateToken({...userDto})
+
+        await tokenService.saveToken(userDto.id, tokens.refreshToken)
+
+        return {
+            ...tokens,
+            user: userDto
+        }
+    }
+
     async logout(refreshToken) {
         const token = await tokenService.removeToken(refreshToken)
         return token;

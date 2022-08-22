@@ -39,6 +39,7 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
   const addTaskClick = () => {
     addTask(false, value, idList),
     setInputActive(false)
+    setValue("")
   }
   
   return (
@@ -80,7 +81,7 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
                       <IconButton onClick={() => addTaskClick()}>
                         <DoneIcon color="success" />
                       </IconButton>
-                      <IconButton onClick={() => setInputActive(false)} >
+                      <IconButton onClick={() => {setInputActive(false); setValue("")}} >
                         <CloseIcon color="error" />
                       </IconButton>
                     </InputAdornment>

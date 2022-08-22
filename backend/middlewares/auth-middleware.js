@@ -13,11 +13,12 @@ export function authMiddleware(req, res, next) {
             return next(ApiError.UnAuthorizedError())
         }
 
+        
         const userData = tokenService.validateAccessToken(accessToken)
         if(!userData){
             return next(ApiError.UnAuthorizedError())
         }
-
+        
         req.user = userData
         next();
     } catch(e) {

@@ -54,6 +54,11 @@ const MenuList = () => {
     toolAddModalActive()
   }
 
+  const onCliar = () => {
+    deleteTaskList(selectedTaskList, user.user.id)
+    setDefaultTool()
+  }
+
   return (
     <div className="menu menu--right">
         <div className="menuItemContainer">
@@ -80,7 +85,7 @@ const MenuList = () => {
         {isClear
           ?(
               <div className="menuItemContainer">
-                <Button disabled={selectedTaskList.length === 0} sx={buttonStyle} variant="contained" color="success" onClick={() => deleteTaskList(selectedTaskList, user.user.id)}>
+                <Button disabled={selectedTaskList.length === 0} sx={buttonStyle} variant="contained" color="success" onClick={() => onCliar()}>
                   <CheckIcon />
                 </Button>
                 <Button variant="contained" color="error" sx={buttonStyle}  onClick={() => setDefaultTool()}>

@@ -1,5 +1,5 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
-import { TextField, Button } from '@mui/material'
+import React, { FC, useEffect, useState } from 'react'
+import { TextField, Button, Alert } from '@mui/material'
 import "../less/register.less"
 import useInput from '../hooks/useInput'
 import { IInput } from '../types/types'
@@ -12,7 +12,7 @@ import PasswordInput from '../components/PasswordInput'
 const Register: FC = () => {
     const navigator = useNavigate()
 
-    const {isLoading} = useTypeSelector(state => state.user)
+    const {isLoading, error} = useTypeSelector(state => state.user)
 
     const email: IInput = useInput("", {empty: false, email: true})
     const password: IInput = useInput("", {empty: false, minLength: 8})
@@ -69,6 +69,11 @@ const Register: FC = () => {
                 </div>
             </form>
           </div>
+            {error === "Пользователь не авторизован" || !error
+                ? ("")
+                : (
+                <Alert severity="error">{error}</Alert>
+            )}
         </div>
       )
 }

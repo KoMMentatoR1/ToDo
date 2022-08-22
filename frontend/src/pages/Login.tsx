@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react'
 import "../less/login.less"
-import { TextField, Button } from '@mui/material'
+import { TextField, Button, Alert } from '@mui/material'
 import useInput from '../hooks/useInput'
 import { IInput } from '../types/types'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +16,7 @@ const Login: FC = () => {
   const email: IInput = useInput("", {empty: false})
   const password: IInput = useInput("", {empty: false})
 
-  const {isLoading} = useTypeSelector(state => state.user)
+  const {isLoading, error} = useTypeSelector(state => state.user)
   const {login} = useAction()
 
   const auth = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,12 +48,20 @@ const Login: FC = () => {
               />
             </div>
             <PasswordInput label='Пароль *' password={password}/>
+            <Button sx={{m: "auto"}} onClick={() => {navigator("/switchPassword")}} variant='text'>Forgot Password?</Button>
           </div>
           <div className="buttonContainer">
             <Button disabled={!password.isValid || !email.isValid} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={(e) => auth(e)}>log in</Button>
             <Button onClick={() => {navigator("/register")}} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">Sing up</Button>
           </div>
         </form>
+      </div>
+      <div>
+        {error === "Пользователь не авторизован" || !error
+        ? ("")
+        : (
+          <Alert severity="error">{error}</Alert>
+        )}
       </div>
     </div>
   )
