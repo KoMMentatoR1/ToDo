@@ -13,10 +13,15 @@ export enum TaskTypes {
     FETCH_TASK_UPDATE="FETCH_TASK_UPDATE",
     FETCH_TASK_DELETE="FETCH_TASK_DELETE",
     FETCH_TASK_ERROR="FETCH_TASK_ERROR",
+    FETCH_TASK_WITHOUT_LOADING="FETCH_TASK_WITHOUT_LOADING"
 }
 
 interface FetchTask{
     type: TaskTypes.FETCH_TASK
+}
+
+interface FetchTaskWithoutLoading{
+    type: TaskTypes.FETCH_TASK_WITHOUT_LOADING
 }
 
 interface FetchTaskAdd{
@@ -45,4 +50,4 @@ interface FetchTaskError{
 }
 
 
-export type TaskAction = FetchTask | FetchTaskAdd | FetchTaskGet | FetchTaskUpdate | FetchTaskDelete | FetchTaskError
+export type TaskAction = FetchTask | FetchTaskWithoutLoading | FetchTaskAdd | FetchTaskGet | FetchTaskUpdate | FetchTaskDelete | FetchTaskError

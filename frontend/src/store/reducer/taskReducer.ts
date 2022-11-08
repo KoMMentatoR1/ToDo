@@ -10,6 +10,8 @@ export const taskReducer = (state = initialState, action: TaskAction): ITaskStat
     switch(action.type){
         case TaskTypes.FETCH_TASK:
             return {isLoading: true, error: null, tasks: [...state.tasks]}
+        case TaskTypes.FETCH_TASK_WITHOUT_LOADING:
+            return {isLoading: false, error: null, tasks: [...state.tasks]}    
         case TaskTypes.FETCH_TASK_ADD:
             return {isLoading: false, error: null, tasks: [...state.tasks, action.payload]}
         case TaskTypes.FETCH_TASK_GET:

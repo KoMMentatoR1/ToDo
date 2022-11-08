@@ -2,14 +2,14 @@ import {Dispatch} from "redux";
 import { AuthAction, AuthActionTypes, IUser } from "../../types/authTypes";
 import AuthService from "../../services/AuthService";
 import axios from "axios";
-import { AuthResponse } from "../../models/response/AuthResponce";
 import { API_URL } from "../../http";
 
 export const login = (email: string, password: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            const response = await AuthService.login(email, password)            
+            const response = await AuthService.login(email, password)
+            localStorage.setItem('token', response.data.token)        
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
         } catch (e) {
             dispatch({
@@ -24,8 +24,8 @@ export const cheackAuth = () => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try{
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            const response = await axios.get<AuthResponse>(`${API_URL}user/refresh`, {withCredentials: true})
-            localStorage.setItem('token', response.data.accessToken)
+            const response = await AuthService.refresh()
+            localStorage.setItem('token', response.data.token)
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
         } catch(e: any) {
             dispatch({
@@ -40,7 +40,8 @@ export const registration = (email: string, password: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            const response = await AuthService.registration(email, password)            
+            const response = await AuthService.registration(email, password)  
+            localStorage.setItem('token', response.data.token)          
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
         } catch (e) {
             dispatch({
@@ -70,8 +71,8 @@ export const forgotPassword = (email: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            await axios.post(`${API_URL}user/forgotPassword`, {email})
-            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {accessToken: "", refreshToken: "", user: {email: "", id: -1, isActivated: false}}})         
+            await axios.post(`${API_URL}auth/forgotPassword`, {email})
+            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {token: "", user: {email: "", id: -1, isActivated: false}}})         
         } catch (e) {
             dispatch({
                 type: AuthActionTypes.FETCH_AUTH_ERROR,
@@ -85,8 +86,8 @@ export const newPass = (email: string, code: string, newPass: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            await axios.post(`${API_URL}user/newPass`, {email, code, newPass})      
-            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {accessToken: "", refreshToken: "", user: {email: "", id: -1, isActivated: false}}})         
+            await axios.post(`${API_URL}auth/newPass`, {email, code, newPass})      
+            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {token: "", user: {email: "", id: -1, isActivated: false}}})         
         } catch (e) {
             dispatch({
                 type: AuthActionTypes.FETCH_AUTH_ERROR,
@@ -100,8 +101,8 @@ export const logout = () => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            await AuthService.logout()            
-            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {refreshToken: "", accessToken: "", user: {email: "", id: -1, isActivated: false}}})
+            localStorage.removeItem('token')            
+            dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {token: "", user: {email: "", id: -1, isActivated: false}}})
         } catch (e) {
             dispatch({
                 type: AuthActionTypes.FETCH_AUTH_ERROR,

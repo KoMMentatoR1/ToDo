@@ -66,7 +66,7 @@ const Task: FC<TaskResponse> = ({id, complite, body, TaskListModelId}) => {
   }
   else {
     return(
-      <div className='task'>
+      <div className='task' style={{textDecoration: complite ? "line-through" : "none"}}>
           <FormControlLabel
           sx={{ '& .MuiTypography-root': { fontSize: 25 } }}
           label={body}

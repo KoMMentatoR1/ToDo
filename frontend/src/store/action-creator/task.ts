@@ -34,7 +34,7 @@ export const getTask = (TaskListModelId: number) => {
 export const updateTask = (id: number, complite: boolean, body: string, TaskListModelId: number) => {
     return async (dispatch: Dispatch<TaskAction>) => {
         try {
-            dispatch({type: TaskTypes.FETCH_TASK})
+            dispatch({type: TaskTypes.FETCH_TASK_WITHOUT_LOADING})
             const response = await TaskService.update(id, complite, body, TaskListModelId)            
             dispatch({type: TaskTypes.FETCH_TASK_UPDATE, payload: response.data})
         } catch (e) {
@@ -49,7 +49,7 @@ export const updateTask = (id: number, complite: boolean, body: string, TaskList
 export const deleteTask = (id: number, TaskListModelId: number) => {
     return async (dispatch: Dispatch<TaskAction>) => {
         try {
-            dispatch({type: TaskTypes.FETCH_TASK})
+            dispatch({type: TaskTypes.FETCH_TASK_WITHOUT_LOADING})
             const response = await TaskService.delete(id, TaskListModelId)            
             dispatch({type: TaskTypes.FETCH_TASK_DELETE, payload: id})
         } catch (e) {

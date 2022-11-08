@@ -45,7 +45,6 @@ const PasswordInput: FC<PasswordInputComponent> = ({label, password, errors}) =>
     <FormControl error={password.isDirty && (!password.isValid || error.state)} sx={{ marginTop: "30px", width: '100%' }} variant="outlined">
         <InputLabel htmlFor="password">{label}</InputLabel>
         <OutlinedInput
-            id="password"
             type={visiblePassword ? 'text' : 'password'}
             value={password.data}
             onChange={password.onChange}
