@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/user/user.model';
+import { User } from 'src/models/user.model';
 import { MailService } from 'src/mail/mail.service';
 import { SwitchPassDto } from './dto/switchPass.dto';
 import { newPassDto } from './dto/newPass.dto';
@@ -89,6 +89,8 @@ export class AuthService {
 
   async forgotPass(email: string) {
     const user = await this.userService.getUserByEmail(email);
+    if (!user)
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
     const key = `f${(~~(Math.random() * 1e8)).toString(16)}`;
     await user.update({ switchKey: key });
     await this.mailService.sendSwitchPasswordCodeMail(email, key);
@@ -98,6 +100,8 @@ export class AuthService {
 
   async newPass(dto: newPassDto) {
     const user = await this.userService.getUserByEmail(dto.email);
+    if (!user)
+      throw new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND);
 
     if (user.switchKey != dto.code) {
       throw new HttpException('Неверный код', HttpStatus.BAD_REQUEST);
@@ -118,6 +122,6 @@ export class AuthService {
   }
 
   async activate(value: string) {
-    return this.userService.activate(value)
+    return this.userService.activate(value);
   }
 }

@@ -8,9 +8,9 @@ import { MailModule } from './mail/mail.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { TasklistModule } from './tasklist/tasklist.module';
-import { User } from './user/user.model';
-import { TaskList } from './tasklist/tasklist.model';
-import { Task } from './tasks/task.model';
+import { User } from './models/user.model';
+import { TaskList } from './models/tasklist.model';
+import { Task } from './models/task.model';
 
 @Module({
   imports: [

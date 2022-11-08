@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateTaskDto } from './dto/CreateTask.dto';
 import { DeleteTaskDto } from './dto/DeleteTask.dto';
 import { UpdateTaskDto } from './dto/UpdateTask.dto';
-import { Task } from './task.model';
+import { Task } from '../models/task.model';
 
 @Injectable()
 export class TasksService {
