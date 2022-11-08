@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Task } from './task.model';
+import { Task } from '../models/task.model';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
 

@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create_user.dto';
-import { User } from './user.model';
+import { User } from '../models/user.model';
 import * as uuid from 'uuid';
 import { MailService } from 'src/mail/mail.service';
 
@@ -25,8 +25,6 @@ export class UserService {
       where: { email },
       include: { all: true },
     });
-    if (!user)
-      throw new HttpException('пользователь не найден', HttpStatus.NOT_FOUND);
     return user;
   }
 

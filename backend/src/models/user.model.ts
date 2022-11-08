@@ -1,5 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { TaskList } from 'src/tasklist/tasklist.model';
+import { TaskList } from 'src/models/tasklist.model';
 
 interface UserCreationAttrs {
   email: string;

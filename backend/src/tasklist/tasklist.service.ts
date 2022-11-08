@@ -4,7 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { DeleteTaskListDto } from './DeleteTaskList.dto';
 import { CreateTaskListDto } from './dto/CreateTastList.dto';
 import { UpdateTaskListDto } from './dto/UpdateTaskList.dto';
-import { TaskList } from './tasklist.model';
+import { TaskList } from '../models/tasklist.model';
 
 @Injectable()
 export class TasklistService {

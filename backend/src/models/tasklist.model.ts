@@ -7,8 +7,8 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Task } from 'src/tasks/task.model';
-import { User } from 'src/user/user.model';
+import { Task } from 'src/models/task.model';
+import { User } from 'src/models/user.model';
 
 @Table({ tableName: 'taskList', timestamps: false, freezeTableName: true })
 export class TaskList extends Model<TaskList> {
