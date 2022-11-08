@@ -1,0 +1,33 @@
+@import "./var.less";
+
+.task{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &DeleteButton{
+        background-color: transparent;
+        outline: transparent;
+        border: 0px solid transparent;
+        color: @deleteColor;
+
+        &:hover{
+            cursor: pointer;
+            color: @darkenDeleteColor;
+        }
+    }
+       
+    &EditButton{
+        background-color: transparent;
+        outline: transparent;
+        border: 0px solid transparent;
+        color: @editColor;
+
+        margin-right: 10px;
+
+        &:hover{
+            cursor: pointer;
+            color: @darkenEditColor;
+        }
+    }   
+}
