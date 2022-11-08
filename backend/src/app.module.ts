@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TasksModule } from './tasks/tasks.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { MailModule } from './mail/mail.module';
-import * as path from 'path';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { TasklistModule } from './tasklist/tasklist.module';
@@ -15,8 +13,6 @@ import { TaskList } from './tasklist/tasklist.model';
 import { Task } from './tasks/task.model';
 
 @Module({
-  controllers: [],
-  providers: [],
   imports: [
     MailerModule.forRoot({
       transport:
@@ -36,15 +32,12 @@ import { Task } from './tasks/task.model';
       envFilePath: `.env`,
       isGlobal: true,
     }),
-    ServeStaticModule.forRoot({
-      rootPath: path.resolve(__dirname, 'static'),
-    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'postgres',
+      password: '145415',
       database: 'todo',
       models: [User, TaskList, Task],
       autoLoadModels: true,

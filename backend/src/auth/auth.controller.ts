@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { AuthService } from './auth.service';
 import { newPassDto } from './dto/newPass.dto';
@@ -31,5 +31,10 @@ export class AuthController {
   @Post('/newPass')
   NewPass(@Body() dto: newPassDto) {
     return this.authService.newPass(dto);
+  }
+
+  @Get('/active/:value')
+  activation(@Param('value') value: string) {
+    return this.authService.activate(value);
   }
 }

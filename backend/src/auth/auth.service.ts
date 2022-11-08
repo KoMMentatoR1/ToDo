@@ -13,7 +13,6 @@ import { MailService } from 'src/mail/mail.service';
 import { SwitchPassDto } from './dto/switchPass.dto';
 import { newPassDto } from './dto/newPass.dto';
 import { OutputUserDto } from './dto/outputUser.dto';
-//TODO: поместить рефреш токен в хедер
 @Injectable()
 export class AuthService {
   constructor(
@@ -116,5 +115,9 @@ export class AuthService {
       ...tokens,
       user: userDto,
     };
+  }
+
+  async activate(value: string) {
+    return this.userService.activate(value)
   }
 }
