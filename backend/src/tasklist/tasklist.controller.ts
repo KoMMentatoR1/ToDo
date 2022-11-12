@@ -1,5 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { DeleteTaskListDto } from './DeleteTaskList.dto';
+import { Body, Controller, Get, Param, Post, Put, Headers } from '@nestjs/common';
+import { DeleteTaskListDto } from './dto/DeleteTaskList.dto';
 import { CreateTaskListDto } from './dto/CreateTastList.dto';
 import { UpdateTaskListDto } from './dto/UpdateTaskList.dto';
 import { TasklistService } from './tasklist.service';
@@ -13,14 +13,14 @@ export class TasksListController {
     return this.TaskListService.Create(dto);
   }
 
-  @Post('/get')
-  Get(@Body('userId') id: number) {
-    return this.TaskListService.getByUserId(id);
+  @Get('/get/:id')
+  Get(@Param("id") id:number, @Headers("Authorization") authorization: string) {
+    return this.TaskListService.getByUserId(id, authorization);
   }
 
-  @Post('/update')
-  Update(@Body() dto: UpdateTaskListDto) {
-    return this.TaskListService.updateList(dto);
+  @Put('/update/:id')
+  Update(@Param("id") id: number, @Body() dto: UpdateTaskListDto) {
+    return this.TaskListService.updateList(id, dto);
   }
 
   @Post('/delete')

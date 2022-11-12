@@ -1,6 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Headers, Delete, Query, Put } from '@nestjs/common';
 import { CreateTaskDto } from './dto/CreateTask.dto';
-import { DeleteTaskDto } from './dto/DeleteTask.dto';
 import { UpdateTaskDto } from './dto/UpdateTask.dto';
 import { TasksService } from './tasks.service';
 
@@ -13,18 +12,18 @@ export class TasksController {
     return this.TaskService.add(dto);
   }
 
-  @Post('/get')
-  Get(@Body('TaskListId') ListId: number) {
-    return this.TaskService.getByListId(ListId);
+  @Get('/all/:TaskListModelId')
+  Get(@Param('TaskListModelId') ListId: number, @Headers("Authorization") authorization: string) {
+    return this.TaskService.getByListId(ListId, authorization);
   }
 
-  @Post('/update')
-  Update(@Body() dto: UpdateTaskDto) {
-    return this.TaskService.update(dto);
+  @Put('/update/:id')
+  Update(@Param("id") id: number, @Body() dto: UpdateTaskDto) {
+    return this.TaskService.update(id, dto);
   }
 
-  @Post('/delete')
-  Delete(@Body() dto: DeleteTaskDto) {
-    return this.TaskService.delete(dto);
+  @Delete('/delete/:id')
+  Delete(@Param("id") id: number, @Body("taskListId") taskListId: number) {
+    return this.TaskService.delete(id, taskListId);
   }
 }

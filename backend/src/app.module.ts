@@ -16,16 +16,16 @@ import { Task } from './models/task.model';
   imports: [
     MailerModule.forRoot({
       transport:
-        'smtps://todosender512@mail.ru:wKCLDqTJ1q7E0uM8bUvs@smtp.mail.ru',
+      "smtps://todo.todo.90@mail.ru:g6XHF2pU8a9TBajW8XTC@smtp.mail.ru",
       defaults: {
-        from: '"no reply" <project.oop@mail.ru>',
+        from: '"no reply" <todo.todo.90@mail.ru>',
       },
       template: {
         dir: __dirname + '/templates',
         adapter: new EjsAdapter(),
         options: {
           strict: true,
-        },
+        },  
       },
     }),
     ConfigModule.forRoot({
@@ -41,7 +41,7 @@ import { Task } from './models/task.model';
       database: 'todo',
       models: [User, TaskList, Task],
       autoLoadModels: true,
-      /* sync: { alter: true }, */
+      sync: { force: true },
       /* dialectOptions:{
                 ssl:{
                     require: true,

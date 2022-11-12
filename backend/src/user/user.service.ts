@@ -34,9 +34,9 @@ export class UserService {
     throw new HttpException('пользователь не найден', HttpStatus.NOT_FOUND);
   }
 
-  async activate(value: string) {
+  async activate(link: string) {
     const user = await this.userRepository.findOne({
-      where: { acticationLink: value },
+      where: { acticationLink: link },
     });
     if (user) {
       user.update({ isActivated: true });

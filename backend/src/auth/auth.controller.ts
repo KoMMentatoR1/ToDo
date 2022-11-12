@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post, Redirect } from '@nestjs/common';
 import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { AuthService } from './auth.service';
 import { newPassDto } from './dto/newPass.dto';
@@ -23,8 +23,8 @@ export class AuthController {
     return this.authService.switchPass(dto);
   }
 
-  @Post('/forgotPassowrd')
-  ForgotPass(@Body() email: string) {
+  @Post('/forgotPassword')
+  ForgotPass(@Body("email") email: string) {
     return this.authService.forgotPass(email);
   }
 
@@ -33,8 +33,15 @@ export class AuthController {
     return this.authService.newPass(dto);
   }
 
-  @Get('/active/:value')
-  activation(@Param('value') value: string) {
-    return this.authService.activate(value);
+  @Get('/active/:link')
+  @Redirect(process.env.CLIENT_URL, 302)
+  activation(@Param('link') link: string) {
+    const user = this.authService.activate(link);
+    return {url: process.env.CLIENT_URL}
+  }
+
+  @Get('/refresh')
+  refresh(@Headers("Authorization") authorization: string) {
+    return this.authService.refresh(authorization);
   }
 }

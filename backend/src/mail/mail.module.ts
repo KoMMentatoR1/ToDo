@@ -1,5 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { UserModule } from 'src/user/user.module';
+import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 
 @Module({
