@@ -5,7 +5,7 @@ import { TaskAction, TaskTypes } from "../../types/taskTypes"
 export const addTask = (complite: boolean, body: string, TaskListModelId: number) => {
     return async (dispatch: Dispatch<TaskAction>) => {
         try {
-            dispatch({type: TaskTypes.FETCH_TASK})
+            dispatch({type: TaskTypes.FETCH_TASK_WITHOUT_LOADING})
             const response = await TaskService.add(complite, body, TaskListModelId)            
             dispatch({type: TaskTypes.FETCH_TASK_ADD, payload: response.data})
         } catch (e) {
@@ -16,7 +16,7 @@ export const addTask = (complite: boolean, body: string, TaskListModelId: number
         }
     }
 }
-export const getTask = (TaskListModelId: number) => {
+export const getTask = (TaskListModelId: number, id: number) => {
     return async (dispatch: Dispatch<TaskAction>) => {
         try {
             dispatch({type: TaskTypes.FETCH_TASK})

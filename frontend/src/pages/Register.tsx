@@ -8,18 +8,24 @@ import { useAction } from '../hooks/useAction'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import LoaderWithBackground from '../components/LoaderWithBackground'
 import PasswordInput from '../components/PasswordInput'
+import CustomSnackbarError from '../components/CustomSnackbarError'
+import CustomSnackbarSuccess from '../components/CustomSnackbarSuccess'
 
 const Register: FC = () => {
     const navigator = useNavigate()
 
-    const {isLoading, error} = useTypeSelector(state => state.user)
+    const {isLoading, success} = useTypeSelector(state => state.auth)
 
     const email: IInput = useInput("", {empty: false, email: true})
     const password: IInput = useInput("", {empty: false, minLength: 8})
     const repeatPassword: IInput = useInput("", {empty: false, minLength: 8})
     const [passwordError, setPasswordError] = useState<boolean>(false)
 
-    const {registration} = useAction()
+    const {registration, clearErrorAuth} = useAction()
+
+    useEffect(() => {
+        clearErrorAuth()
+    }, [])
 
     useEffect(() => {
         if(password.isDirty && repeatPassword.isDirty && (repeatPassword.data !== password.data)){
@@ -69,11 +75,10 @@ const Register: FC = () => {
                 </div>
             </form>
           </div>
-            {error === "Пользователь не авторизован" || !error
-                ? ("")
-                : (
-                <Alert severity="error">{error}</Alert>
-            )}
+          <CustomSnackbarError />
+          {
+            success && <CustomSnackbarSuccess text='Пользователь зарегистрирован. Для входа нужно подтвердить аккаунт по ссылке на почте'/>
+          }
         </div>
       )
 }

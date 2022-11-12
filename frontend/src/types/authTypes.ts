@@ -11,6 +11,7 @@ export interface AuthState {
     user: AuthResponse;
     isLoading: boolean;
     error: null | string;
+    success: boolean;
 }
 
 export enum AuthActionTypes {
@@ -18,7 +19,9 @@ export enum AuthActionTypes {
     FETCH_AUTH_SUCCESS = 'FETCH_USERS_SUCCESS',
     FETCH_AUTH_ERROR = 'FETCH_USERS_FETCH_USERS_ERROR',
     FETCH_SWITCHPASSWORD_ERROR = "FETCH_SWITCHPASSWORD_ERROR",
-    FETCH_SWITCHPASSWORD = "FETCH_SWITCHPASSWORD"
+    FETCH_SWITCHPASSWORD = "FETCH_SWITCHPASSWORD",
+    CLEAR_ERROR = "CLEAR_ERROR",
+    SWITCH_SUCCESS = "SWITCH_SUCCESS",
 }
 interface FetchAuthAction {
     type: AuthActionTypes.FETCH_AUTH;
@@ -42,4 +45,13 @@ interface FetchAuthErrorAction {
     payload: string;
 }
 
-export type AuthAction = FetchAuthAction | FetchAuthErrorAction | FetchAuthSuccessAction | FetchSwitchPasswordErrorAction | FetchSwitchPassword
+interface ClearError {
+    type: AuthActionTypes.CLEAR_ERROR;
+}
+
+interface SwitchSuccess {
+    type: AuthActionTypes.SWITCH_SUCCESS;
+    payload: boolean;
+}
+
+export type AuthAction = ClearError | FetchAuthAction | SwitchSuccess | FetchAuthErrorAction | FetchAuthSuccessAction | FetchSwitchPasswordErrorAction | FetchSwitchPassword

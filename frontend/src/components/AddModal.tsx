@@ -15,7 +15,7 @@ const AddModal: FC<IAddModal> = ({open, onClose}) => {
   const [value, setValue] = useState<string>("")
   
   const {addTaskList, setDefaultTool} = useAction()
-  const {user} = useTypeSelector(store => store.user)
+  const {user} = useTypeSelector(store => store.auth)
 
   const addList = () => {
     addTaskList(value, user.user.id)

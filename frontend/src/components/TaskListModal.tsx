@@ -26,10 +26,11 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
 
   const {getTask, addTask} = useAction()
   const {tasks, isLoading} = useTypeSelector(state => state.task)
+  const {user} = useTypeSelector(state => state.auth)
 
   useEffect(() => {
     if(open){
-      getTask(idList)
+      getTask(idList, user.user.id)
     }
   }, [open])
 
@@ -62,7 +63,7 @@ const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
                 id={task.id}
                 complite={task.complite}
                 body={task.body}
-                TaskListModelId={task.TaskListModelId}
+                TaskListId={task.TaskListId}
                 key={task.id}
               />
             ))}

@@ -1,6 +1,9 @@
 import { Button, TextField } from "@mui/material"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import CustomSnackbarError from "../components/CustomSnackbarError"
+import CustomSnackbarSuccess from "../components/CustomSnackbarSuccess"
+import PasswordInput from "../components/PasswordInput"
 import { useAction } from "../hooks/useAction"
 import useInput from "../hooks/useInput"
 import "../less/login.less"
@@ -57,7 +60,7 @@ const SwitchPassword = () => {
                         <div className='loginInput'>
                             <TextField
                             error={code.isDirty && !code.isValid}
-                            sx={{width: "100%", mb: "25px"}}
+                            sx={{width: "100%"}}
                             onChange={code.onChange}
                             onBlur={code.onBlur}
                             label="Code"
@@ -68,19 +71,9 @@ const SwitchPassword = () => {
                             />
                         </div>
                         <div className='loginInput'>
-                            <TextField
-                                error={newPassword.isDirty && !newPassword.isValid}
-                                sx={{width: "100%"}}
-                                onChange={newPassword.onChange}
-                                onBlur={newPassword.onBlur}
-                                label="New password"
-                                variant="outlined"
-                                value={newPassword.data}
-                                helperText={newPassword.isDirty && newPassword.errorMessage}
-                                required
-                            />  
+                        <PasswordInput label='Пароль *' password={newPassword} />
                         </div>
-                        <Button  sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendNewPass()}>Send code</Button>
+                        <Button  sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendNewPass()}>Switch password</Button>
                     </div>
                 )
             }
@@ -88,6 +81,8 @@ const SwitchPassword = () => {
                 <Button onClick={() => {navigator("/login")}} sx={{mb: "25px", mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined">Sing in</Button>
             </div>
         </form>
+        <CustomSnackbarError />
+        <CustomSnackbarSuccess text="Пароль изменен успешно" />
         </div>
     </div>
   )

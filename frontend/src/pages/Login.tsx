@@ -1,6 +1,6 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useEffect} from 'react'
 import "../less/login.less"
-import { TextField, Button, Alert } from '@mui/material'
+import { TextField, Button } from '@mui/material'
 import useInput from '../hooks/useInput'
 import { IInput } from '../types/types'
 import { useNavigate } from 'react-router-dom'
@@ -8,6 +8,7 @@ import { useAction } from '../hooks/useAction'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import LoaderWithBackground from '../components/LoaderWithBackground'
 import PasswordInput from '../components/PasswordInput'
+import CustomSnackbarError from '../components/CustomSnackbarError'
 
 
 const Login: FC = () => {
@@ -16,8 +17,12 @@ const Login: FC = () => {
   const email: IInput = useInput("", {empty: false})
   const password: IInput = useInput("", {empty: false})
 
-  const {isLoading, error} = useTypeSelector(state => state.user)
-  const {login} = useAction()
+  const { isLoading } = useTypeSelector(state => state.auth)
+  const {login, clearErrorAuth} = useAction()
+
+  useEffect(() => {
+    clearErrorAuth()
+  }, [])
 
   const auth = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
@@ -56,13 +61,7 @@ const Login: FC = () => {
           </div>
         </form>
       </div>
-      <div>
-        {error === "Пользователь не авторизован" || !error
-        ? ("")
-        : (
-          <Alert severity="error">{error}</Alert>
-        )}
-      </div>
+      <CustomSnackbarError />
     </div>
   )
 }

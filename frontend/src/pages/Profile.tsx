@@ -1,5 +1,6 @@
-import { Alert, Button } from "@mui/material"
-import { useState } from "react"
+import {Button } from "@mui/material"
+import CustomSnackbarError from "../components/CustomSnackbarError"
+import CustomSnackbarSuccess from "../components/CustomSnackbarSuccess"
 import MenuList from "../components/MenuList"
 import PasswordInput from "../components/PasswordInput"
 import PersonMenu from "../components/PersonMenu"
@@ -11,16 +12,13 @@ import "../less/profile.less"
 
 const Profile = () => {
     const password = useInput("", {empty: false})
-    const newPassword = useInput("", {empty: false})
-
-    const [alertOpen, setAlertOpen] = useState<boolean>(false)
+    const newPassword = useInput("", {empty: false, minLength: 8})
 
     const {switchPassword} = useAction()
-    const {user, error} = useTypeSelector(state => state.user)
+    const {user, error, success} = useTypeSelector(state => state.auth)
 
     const switchClick = () => {
         switchPassword(user.user.id, password.data, newPassword.data)
-        setAlertOpen(true)
     }
 
     return (
@@ -30,30 +28,19 @@ const Profile = () => {
                 <div className="profileDash">
                     <div className="profileSwitchPasswordTitle">Смена пароля</div>
                     <PasswordInput label="Старый пароль *" password={password}/>
-                    <PasswordInput label="Новый пароль *" password={newPassword}/>
+                    <PasswordInput label="Новый пароль *" password={newPassword} />
                     <Button
                         sx={{width: "100%", mt: "25px", mb: "25px"}}
                         className="switchPasswordBautton"
                         variant="contained"
                         onClick={() => switchClick()}
+                        disabled={!password.isValid || !newPassword.isValid}
                     >
                         Поменять пароль
                     </Button>
-                    {   
-                        alertOpen
-                        ?(
-                            error
-                            ?(
-                                <Alert severity="error">Неверный старый пароль</Alert>
-                            )
-                            :(
-                                <Alert severity="success">Пароль успешно изменен</Alert>
-                            )
-                        )
-                        :(
-                            ""
-                        )
-                        
+                    <CustomSnackbarError />
+                    {
+                        success && !error && <CustomSnackbarSuccess text="Пароль успешно изменен"/>
                     }
                 </div>
                 <MenuList />

@@ -17,7 +17,7 @@ const ModalEdit: FC<IModal> = ({open, onClose, title, cardId} : IModal) => {
 
   const [value, setValue] = useState<string>("")
 
-  const {id} = useTypeSelector(state => state.user.user.user)
+  const {id} = useTypeSelector(state => state.auth.user.user)
   const {updateTaskList, setDefaultTool} = useAction()
 
   const clickSuccess = () => {

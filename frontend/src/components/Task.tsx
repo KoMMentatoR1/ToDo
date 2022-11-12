@@ -10,7 +10,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
 
-const Task: FC<TaskResponse> = ({id, complite, body, TaskListModelId}) => {
+const Task: FC<TaskResponse> = ({id, complite, body, TaskListId}) => {
 
   const {updateTask, deleteTask} = useAction() 
 
@@ -19,16 +19,16 @@ const Task: FC<TaskResponse> = ({id, complite, body, TaskListModelId}) => {
 
   const checkTaskClick = () => {     // Изменение завершенности таска
     if(complite) {
-      updateTask(id, false, body, TaskListModelId)
+      updateTask(id, false, body, TaskListId)
     }
     else {
-      updateTask(id, true, body, TaskListModelId)
+      updateTask(id, true, body, TaskListId)
     }
   }
 
   const deleteTaskClick = (e: React.MouseEvent<HTMLButtonElement>) => { // удаление таска
     e.preventDefault()
-    deleteTask(id, TaskListModelId)
+    deleteTask(id, TaskListId)
   }
 
   const editTaskClick = (e: React.MouseEvent<HTMLButtonElement>) => { // Включение редактирования таска
@@ -37,7 +37,7 @@ const Task: FC<TaskResponse> = ({id, complite, body, TaskListModelId}) => {
   }
 
   const doneTaskEdit = () => { // Изменение названия таска
-    updateTask(id, complite, value, TaskListModelId)
+    updateTask(id, complite, value, TaskListId)
     setEditTask(false)
   }
 

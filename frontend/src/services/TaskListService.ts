@@ -8,11 +8,11 @@ export default class TaskListService {
     }
 
     static async get(userId: number): Promise<AxiosResponse<TaskListResponse[]>> {
-        return $api.post<TaskListResponse[]>("tasklist/get", {userId})
+        return $api.get<TaskListResponse[]>(`tasklist/get/${userId}`)
     }
 
     static async update(listId: number, userId: number, title: string): Promise<AxiosResponse<TaskListResponse>> {
-        return $api.post<TaskListResponse>("tasklist/update", {listId, userId, title})
+        return $api.put<TaskListResponse>(`tasklist/update/${listId}`, {userId, title})
     }
 
     static async delete( listId: number[], userId: number ): Promise<AxiosResponse<TaskListResponse>> {

@@ -8,7 +8,7 @@ import TaskListItem from './TaskListItem'
 const TaskLists: FC = () => {
 
   const {taskLists} = useTypeSelector(store => store.taskList)
-  const {user} = useTypeSelector(store => store.user)
+  const {user} = useTypeSelector(store => store.auth)
   const {isLoading} = useTypeSelector(store => store.taskList)
   const {getTaskList} = useAction()
   

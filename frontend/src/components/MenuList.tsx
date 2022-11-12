@@ -21,7 +21,7 @@ const buttonStyle = {
 const MenuList = () => {
 
   const {isEdit, isClear, addModal, selectedTaskList} = useTypeSelector(store => store.tool)
-  const {user} = useTypeSelector(store => store.user)
+  const {user} = useTypeSelector(store => store.auth)
   const {setDefaultTool, toolActiveClear, toolActiveEdit, toolAddModalActive, deleteTaskList} = useAction()
 
   const [open, setOpen] = useState<boolean>(false) // Открытие модалки

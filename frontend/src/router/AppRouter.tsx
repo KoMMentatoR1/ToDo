@@ -4,7 +4,7 @@ import { publicRoutes, userRoutes } from "./routing";
 
 const AppRouter= () => {
 
-  const {isAuth, user} = useTypeSelector(state => state.user)
+  const {isAuth, user} = useTypeSelector(state => state.auth)
 
   if (isAuth && user.user.isActivated) {
     return (
