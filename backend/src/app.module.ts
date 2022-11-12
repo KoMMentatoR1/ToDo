@@ -11,6 +11,8 @@ import { TasklistModule } from './tasklist/tasklist.module';
 import { User } from './models/user.model';
 import { TaskList } from './models/tasklist.model';
 import { Task } from './models/task.model';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
   imports: [
@@ -32,6 +34,9 @@ import { Task } from './models/task.model';
       envFilePath: `.env`,
       isGlobal: true,
     }),
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, '../../', 'frontend', 'dist'),
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: 'localhost',
@@ -40,14 +45,7 @@ import { Task } from './models/task.model';
       password: '145415',
       database: 'todo',
       models: [User, TaskList, Task],
-      autoLoadModels: true,
-      sync: { force: true },
-      /* dialectOptions:{
-                ssl:{
-                    require: true,
-                    rejectUnauthorized: false,
-                }
-            } */
+      autoLoadModels: true
     }),
     UserModule,
     TasksModule,
