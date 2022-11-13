@@ -16,11 +16,15 @@ import * as path from 'path';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.env`,
+      isGlobal: true,
+    }),
     MailerModule.forRoot({
       transport:
-      "smtps://todo.todo.90@mail.ru:g6XHF2pU8a9TBajW8XTC@smtp.mail.ru",
+      `smtps://${process.env.SMTP_USER}:${process.env.SMTP_PASSWORD}@${process.env.SMTP_HOST}`,
       defaults: {
-        from: '"no reply" <todo.todo.90@mail.ru>',
+        from: `"no reply" <${process.env.SMTP_USER}>`,
       },
       template: {
         dir: __dirname + '/templates',
@@ -30,22 +34,19 @@ import * as path from 'path';
         },  
       },
     }),
-    ConfigModule.forRoot({
-      envFilePath: `.env`,
-      isGlobal: true,
-    }),
     ServeStaticModule.forRoot({
       rootPath: path.resolve(__dirname, '../../', 'frontend', 'dist'),
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '145415',
-      database: 'todo',
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASSWORD || '145415',
+      database: process.env.DB_NAME || 'todo',
       models: [User, TaskList, Task],
-      autoLoadModels: true
+      autoLoadModels: true,
+      sync: {force: true}
     }),
     UserModule,
     TasksModule,
