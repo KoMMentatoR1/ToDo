@@ -43,7 +43,6 @@ const Profile = () => {
                         success && !error && <CustomSnackbarSuccess text="Пароль успешно изменен"/>
                     }
                 </div>
-                <MenuList />
                 <PersonMenu />
             </div>
         </div>

@@ -33,6 +33,14 @@ const Login: FC = () => {
     return <LoaderWithBackground />
   }
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    console.log(1);
+    
+    if (e.key === "Enter") {
+      login(email.data, password.data)
+    }
+  }
+
   return (
     <div className='container'>
       <div className='login'>
@@ -52,12 +60,29 @@ const Login: FC = () => {
                 required
               />
             </div>
-            <PasswordInput label='Пароль *' password={password}/>
+            <PasswordInput
+              label='Пароль *'
+              password={password}
+            />
             <Button sx={{m: "auto"}} onClick={() => {navigator("/switchPassword")}} variant='text'>Forgot Password?</Button>
           </div>
           <div className="buttonContainer">
-            <Button disabled={!password.isValid || !email.isValid} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={(e) => auth(e)}>log in</Button>
-            <Button onClick={() => {navigator("/register")}} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">Sing up</Button>
+            <Button
+              disabled={!password.isValid || !email.isValid}
+              sx={{mb: "15px", fontSize: "15px", width: "100%"}}
+              variant="outlined"
+              onKeyPress={(e: React.KeyboardEvent<HTMLButtonElement>) => handleKeyPress(e)}
+              onClick={(e) => auth(e)}
+            >
+              log in
+            </Button>
+            <Button
+              onClick={() => {navigator("/register")}}
+              sx={{mb: "15px", fontSize: "15px", width: "100%"}}
+              variant="outlined"
+            >
+              Sing up
+            </Button>
           </div>
         </form>
       </div>

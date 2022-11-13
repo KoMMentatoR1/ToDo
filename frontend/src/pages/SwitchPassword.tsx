@@ -6,6 +6,7 @@ import CustomSnackbarSuccess from "../components/CustomSnackbarSuccess"
 import PasswordInput from "../components/PasswordInput"
 import { useAction } from "../hooks/useAction"
 import useInput from "../hooks/useInput"
+import { useTypeSelector } from "../hooks/useTypeSelector"
 import "../less/login.less"
 import "../less/switchPassword.less"
 import { IInput } from "../types/types"
@@ -15,10 +16,13 @@ const SwitchPassword = () => {
     const code: IInput = useInput("", {empty: false})
     const newPassword: IInput = useInput("", {empty: false, minLength: 8})
     const navigator = useNavigate()
+    const [canSend, setCanSend] = useState<boolean>(true)
 
     const {forgotPassword, newPass} = useAction()
 
     const [codeInput, setCodeInput] = useState<boolean>(false)
+
+    const {error} = useTypeSelector(state => state.auth)
 
     const sendLogin = () => {
         forgotPassword(email.data)
@@ -27,6 +31,7 @@ const SwitchPassword = () => {
 
     const sendNewPass = () => {
         newPass(email.data, code.data, newPassword.data)
+        setCanSend(false)
         setCodeInput(true)
     }
 
@@ -52,7 +57,7 @@ const SwitchPassword = () => {
                             required
                         />
                         </div>
-                        <Button  sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendLogin()}>Send code</Button>
+                        <Button sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendLogin()}>Send code</Button>
                     </div>
                 )
                 :(
@@ -73,7 +78,7 @@ const SwitchPassword = () => {
                         <div className='loginInput'>
                         <PasswordInput label='Пароль *' password={newPassword} />
                         </div>
-                        <Button  sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendNewPass()}>Switch password</Button>
+                        <Button disabled={!canSend && !error || !newPassword.isValid} sx={{ mt: "25px", fontSize: "15px", width: "100%"}} variant="outlined" onClick={() => sendNewPass()}>Switch password</Button>
                     </div>
                 )
             }
