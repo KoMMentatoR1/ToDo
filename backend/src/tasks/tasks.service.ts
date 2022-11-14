@@ -29,7 +29,6 @@ export class TasksService {
   async update(dto: UpdateTaskDto) {
     const newTask = await this.taskRepository.findByPk(dto.TaskId);
     newTask.update({ complite: dto.complite, body: dto.body });
-    /* const task = new TokenDto(newTask); */
     return newTask;
   }
 

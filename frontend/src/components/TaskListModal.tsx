@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import "../less/cardModal.less"
-import "../less/menu.less"
-import { ITask } from "../types/types";
+import '../less/cardModal.less';
+import '../less/menu.less';
+import { ITask } from '../types/types';
 import Task from './Task';
 import AddIcon from '@mui/icons-material/Add';
 import { ChangeEvent, FC, useState, useEffect } from 'react';
@@ -16,95 +16,89 @@ import { useTypeSelector } from '../hooks/useTypeSelector';
 import Loader from './Loader';
 
 interface IModal {
-  open: boolean,
-  onClose: () => void,
-  title: string,
-  idList: number
+	open: boolean;
+	onClose: () => void;
+	title: string;
+	idList: number;
 }
 
-const TaskListModal: FC<IModal> = ({idList, open, onClose, title}) => {
+const TaskListModal: FC<IModal> = ({ idList, open, onClose, title }) => {
+	const { getTask, addTask } = useAction();
+	const { tasks, isLoading } = useTypeSelector((state) => state.task);
 
-  const {getTask, addTask} = useAction()
-  const {tasks, isLoading} = useTypeSelector(state => state.task)
+	useEffect(() => {
+		if (open) {
+			getTask(idList);
+		}
+	}, [open]);
 
-  useEffect(() => {
-    if(open){
-      getTask(idList)
-    }
-  }, [open])
+	const [inputActive, setInputActive] = useState<boolean>(false);
+	const [value, setValue] = useState<string>('');
 
-  const [inputActive, setInputActive] = useState<boolean>(false)
-  const [value, setValue] = useState<string>("")
+	const addTaskClick = () => {
+		addTask(false, value, idList), setInputActive(false);
+		setValue('');
+	};
 
-  const addTaskClick = () => {
-    addTask(false, value, idList),
-    setInputActive(false)
-    setValue("")
-  }
-  
-  return (
-    <div>
-      <Modal
-        open={isLoading ? true : open}
-        onClose={() => onClose()}
-      >
-        <Box className='cardModal'>
-          <div className='cardModalTitle'>
-            {isLoading ? "" : title}
-          </div>
-          {isLoading
-          ?(<Loader />)
-          : (
-            <form className="cardModalForm">
+	return (
+		<div>
+			<Modal open={isLoading ? true : open} onClose={() => onClose()}>
+				<Box className="cardModal">
+					<div className="cardModalTitle">{isLoading ? '' : title}</div>
+					{isLoading ? (
+						<Loader />
+					) : (
+						<form className="cardModalForm">
+							{tasks.map((task) => (
+								<Task
+									id={task.id}
+									complite={task.complite}
+									body={task.body}
+									TaskListModelId={task.TaskListModelId}
+									key={task.id}
+								/>
+							))}
 
-            {tasks.map((task) => (
-              <Task
-                id={task.id}
-                complite={task.complite}
-                body={task.body}
-                TaskListModelId={task.TaskListModelId}
-                key={task.id}
-              />
-            ))}
+							{inputActive ? (
+								<FormControl variant="outlined">
+									<InputLabel htmlFor="addTaskInput">Введите новую задачу</InputLabel>
+									<OutlinedInput
+										value={value}
+										onChange={(e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+										id="addTaskInput"
+										label="Введите новую задачу"
+										endAdornment={
+											<InputAdornment position="end">
+												<IconButton onClick={() => addTaskClick()}>
+													<DoneIcon color="success" />
+												</IconButton>
+												<IconButton
+													onClick={() => {
+														setInputActive(false);
+														setValue('');
+													}}>
+													<CloseIcon color="error" />
+												</IconButton>
+											</InputAdornment>
+										}
+									/>
+								</FormControl>
+							) : (
+								<AddIcon
+									sx={{
+										transition:
+											'color .1s linear,  background .1s linear, border .1s linear, box-shadow .1s linear',
+									}}
+									className="menuItem"
+									onClick={() => setInputActive(true)}
+								/>
+							)}
+						</form>
+					)}
+				</Box>
+			</Modal>
+		</div>
+	);
+};
 
-            {inputActive
-              ?(
-                <FormControl variant="outlined"> 
-                <InputLabel htmlFor="addTaskInput">Введите новую задачу</InputLabel>
-                <OutlinedInput
-                  value={value}
-                  onChange={(e:ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
-                  id="addTaskInput"
-                  label="Введите новую задачу"
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton onClick={() => addTaskClick()}>
-                        <DoneIcon color="success" />
-                      </IconButton>
-                      <IconButton onClick={() => {setInputActive(false); setValue("")}} >
-                        <CloseIcon color="error" />
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-              )
-              :(
-                <AddIcon
-                sx={{transition: "color .1s linear,  background .1s linear, border .1s linear, box-shadow .1s linear"}}
-                className="menuItem"
-                onClick={() => setInputActive(true)}
-              />
-              )
-            }
-
-            </form>
-          )
-          }
-        </Box>
-      </Modal>  
-    </div>
-  );
-}
-
-export default TaskListModal
+export default TaskListModal;

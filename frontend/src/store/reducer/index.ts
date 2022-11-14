@@ -1,14 +1,14 @@
-import { combineReducers } from "redux";
-import { authReducer } from "./authReducer";
-import { taskListReducer } from "./taskListReducer";
-import { taskReducer } from "./taskReducer";
-import { toolReducer } from "./toolReduces";
+import { combineReducers } from 'redux';
+import { authReducer } from './authReducer';
+import { taskListReducer } from './taskListReducer';
+import { taskReducer } from './taskReducer';
+import { toolReducer } from './toolReduces';
 
 export const rootReducer = combineReducers({
-    user: authReducer,
-    taskList: taskListReducer,
-    tool: toolReducer,
-    task: taskReducer
-})
+	user: authReducer,
+	taskList: taskListReducer,
+	tool: toolReducer,
+	task: taskReducer,
+});
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;

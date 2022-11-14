@@ -1,33 +1,33 @@
-@import "./var.less";
+@import './var.less';
 
-.task{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.task {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 
-    &DeleteButton{
-        background-color: transparent;
-        outline: transparent;
-        border: 0px solid transparent;
-        color: @deleteColor;
+	&DeleteButton {
+		background-color: transparent;
+		outline: transparent;
+		border: 0px solid transparent;
+		color: @deleteColor;
 
-        &:hover{
-            cursor: pointer;
-            color: @darkenDeleteColor;
-        }
-    }
-       
-    &EditButton{
-        background-color: transparent;
-        outline: transparent;
-        border: 0px solid transparent;
-        color: @editColor;
+		&:hover {
+			cursor: pointer;
+			color: @darkenDeleteColor;
+		}
+	}
 
-        margin-right: 10px;
+	&EditButton {
+		background-color: transparent;
+		outline: transparent;
+		border: 0px solid transparent;
+		color: @editColor;
 
-        &:hover{
-            cursor: pointer;
-            color: @darkenEditColor;
-        }
-    }   
+		margin-right: 10px;
+
+		&:hover {
+			cursor: pointer;
+			color: @darkenEditColor;
+		}
+	}
 }

@@ -41,13 +41,6 @@ import { Task } from './tasks/task.model';
       database: 'todo',
       models: [User, TaskList, Task],
       autoLoadModels: true,
-      /* sync: { alter: true }, */
-      /* dialectOptions:{
-                ssl:{
-                    require: true,
-                    rejectUnauthorized: false,
-                }
-            } */
     }),
     UserModule,
     TasksModule,

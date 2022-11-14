@@ -1,30 +1,27 @@
 import { Route, Routes } from 'react-router-dom';
 import { useTypeSelector } from '../hooks/useTypeSelector';
-import { publicRoutes, userRoutes } from "./routing";
+import { publicRoutes, userRoutes } from './routing';
 
-const AppRouter= () => {
+const AppRouter = () => {
+	const { isAuth, user } = useTypeSelector((state) => state.user);
 
-  const {isAuth, user} = useTypeSelector(state => state.user)
+	if (isAuth && user.user.isActivated) {
+		return (
+			<Routes>
+				{userRoutes.map((route) => (
+					<Route path={route.path} element={route.element} key={route.path} />
+				))}
+			</Routes>
+		);
+	} else {
+		return (
+			<Routes>
+				{publicRoutes.map((route) => (
+					<Route path={route.path} element={route.element} key={route.path} />
+				))}
+			</Routes>
+		);
+	}
+};
 
-  if (isAuth && user.user.isActivated) {
-    return (
-      <Routes>
-        {userRoutes.map((route) => (
-          <Route path={route.path} element={route.element} key={route.path} />
-        ))}
-      </Routes>
-    )
-  }
-  else {
-    return (
-      <Routes>
-        {publicRoutes.map((route) => (
-          <Route path={route.path} element={route.element} key={route.path} />
-        ))}
-      </Routes>
-    )
-  }
-
-}
-
-export default AppRouter
+export default AppRouter;

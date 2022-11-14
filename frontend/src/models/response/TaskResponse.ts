@@ -1,6 +1,6 @@
 export interface TaskResponse {
-    id: number;
-    complite: boolean;
-    body: string;
-    TaskListModelId: number;
+	id: number;
+	complite: boolean;
+	body: string;
+	TaskListModelId: number;
 }

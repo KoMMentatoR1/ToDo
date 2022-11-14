@@ -1,69 +1,69 @@
-@import "./var.less";
+@import './var.less';
 
-.menu{
-    position: absolute;
-    top: 55%;
-    background-color: #fff;
+.menu {
+	position: absolute;
+	top: 55%;
+	background-color: #fff;
 
-    border-radius: 20px;
+	border-radius: 20px;
 
-    width: 80px;
-    height: 80%;
+	width: 80px;
+	height: 80%;
 
-    transform: translate3d(0, -50%, 0);
+	transform: translate3d(0, -50%, 0);
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-    &--right{
-        right: 100px;
-    }
+	&--right {
+		right: 100px;
+	}
 
-    &--left{
-        left: 100px;
-    }
+	&--left {
+		left: 100px;
+	}
 
-    &Item{
-        min-width: 50px;
-        min-height: 50px;
+	&Item {
+		min-width: 50px;
+		min-height: 50px;
 
-        border-radius: 50%;
+		border-radius: 50%;
 
-        box-shadow: 1px 1px 1px @subColor;
+		box-shadow: 1px 1px 1px @subColor;
 
-        color: #fff;
+		color: #fff;
 
-        display: block;
-        margin: 10px 0px 10px;
-        padding: 10px;
+		display: block;
+		margin: 10px 0px 10px;
+		padding: 10px;
 
-        background-color: @mainColor;
+		background-color: @mainColor;
 
-        transition: color .2s linear,  background .2s linear, border .2s linear, box-shadow .2s linear;
+		transition: color 0.2s linear, background 0.2s linear, border 0.2s linear, box-shadow 0.2s linear;
 
-        &:hover{
-            color: blue;
-            background-color: @darkenBackground;
-            box-shadow: 1px 1px 1px @darkenShadow;
-            color: @darkenText;
+		&:hover {
+			color: blue;
+			background-color: @darkenBackground;
+			box-shadow: 1px 1px 1px @darkenShadow;
+			color: @darkenText;
 
-            cursor: pointer;
-        }
+			cursor: pointer;
+		}
 
-        &Container{
-            width: 100%;
+		&Container {
+			width: 100%;
 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-    }
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+	}
 
-    &Item.active{
-        color: blue;
-        background-color: @darkenBackground;
-        box-shadow: 1px 1px 1px @darkenShadow;
-        color: @darkenText;
-    }
+	&Item.active {
+		color: blue;
+		background-color: @darkenBackground;
+		box-shadow: 1px 1px 1px @darkenShadow;
+		color: @darkenText;
+	}
 }
