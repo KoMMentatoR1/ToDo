@@ -3,13 +3,14 @@ import { AuthAction, AuthActionTypes } from "../../types/authTypes";
 import AuthService from "../../services/AuthService";
 import axios from "axios";
 import { API_URL } from "../../http";
+import { USER_TOKEN } from "../../constants/localstorage";
 
 export const login = (email: string, password: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
             const response = await AuthService.login(email, password)
-            localStorage.setItem('token', response.data.token)        
+            localStorage.setItem(USER_TOKEN, response.data.token)        
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
         } catch (e: any) {
             dispatch({
@@ -25,10 +26,10 @@ export const cheackAuth = () => {
         try{
             dispatch({type: AuthActionTypes.FETCH_AUTH})
             const response = await AuthService.refresh()
-            localStorage.setItem('token', response.data.token)
+            localStorage.setItem(USER_TOKEN, response.data.token)
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
         } catch(e: any) {
-            localStorage.removeItem("token")
+            localStorage.removeItem(USER_TOKEN)
             dispatch({
                 type: AuthActionTypes.FETCH_AUTH_ERROR,
                 payload: e.response.data.message
@@ -42,7 +43,7 @@ export const registration = (email: string, password: string) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
             const response = await AuthService.registration(email, password) 
-            localStorage.setItem('token', response.data.token) 
+            localStorage.setItem(USER_TOKEN, response.data.token) 
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: response.data})
             dispatch({type: AuthActionTypes.SWITCH_SUCCESS, payload: true})      
         } catch (e: any) {
@@ -103,7 +104,7 @@ export const logout = () => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
             dispatch({type: AuthActionTypes.FETCH_AUTH})
-            localStorage.removeItem('token')            
+            localStorage.removeItem(USER_TOKEN)            
             dispatch({type: AuthActionTypes.FETCH_AUTH_SUCCESS, payload: {token: "", user: {email: "", id: -1, isActivated: false}}})
         } catch (e: any) {
             dispatch({

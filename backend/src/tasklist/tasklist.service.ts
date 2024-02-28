@@ -8,6 +8,7 @@ import { TaskList } from '../models/tasklist.model';
 import { Op } from 'sequelize';
 import { TokenService } from 'src/token/token.service';
 import { User } from 'src/models/user.model';
+import { LIST_NOT_FOUND_ERROR } from 'src/constants/errors';
 
 @Injectable()
 export class TasklistService {
@@ -36,14 +37,14 @@ export class TasklistService {
   }
   async updateList(id: number, dto: UpdateTaskListDto) {
     const taskList = await this.taskListRepository.findByPk(id)
-    if (!taskList) throw new HttpException('Лист задач не найден', HttpStatus.NOT_FOUND);
+    if (!taskList) throw new HttpException(LIST_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
 
     const user = await this.userRepository.findByPk(dto.userId)
     if (!user) throw new HttpException('Юзер не найден', HttpStatus.NOT_FOUND);
 
     const newList = await this.taskListRepository.findByPk(id);
     if (!newList)
-      throw new HttpException('Лист задач не найден', HttpStatus.NOT_FOUND);
+      throw new HttpException(LIST_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
     await newList.update({ title: dto.title });
     return newList;
   }
