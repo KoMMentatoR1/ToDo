@@ -20,7 +20,7 @@ const Register: FC = () => {
     const password: IInput = useInput("", {empty: false, minLength: 8})
     const repeatPassword: IInput = useInput("", {empty: false, minLength: 8})
     const [passwordError, setPasswordError] = useState<boolean>(false)
-
+    const disabledButton = !password.isValid || !email.isValid || !repeatPassword.isValid || passwordError
     const {registration, clearErrorAuth} = useAction()
 
     useEffect(() => {
@@ -70,7 +70,7 @@ const Register: FC = () => {
                     <PasswordInput label='Повторите пароль *' password={repeatPassword} errors={[{state: passwordError, message: "Пароли не совпадают"}]}/>
                 </div>
                 <div className="buttonContainer">
-                    <Button onClick={(e) => auth(e)} disabled={!password.isValid || !email.isValid || !repeatPassword.isValid || passwordError} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">register</Button>
+                    <Button onClick={(e) => auth(e)} disabled={disabledButton} sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">register</Button>
                     <Button onClick={() => navigator("/login") }  sx={{mb: "15px", fontSize: "15px", width: "100%"}} variant="outlined">Sing in</Button>
                 </div>
             </form>

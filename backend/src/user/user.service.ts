@@ -12,7 +12,7 @@ export class UserService {
     private mailService: MailService,
   ) {}
 
-  async createUser(dto: CreateUserDto) {
+  async createUser(dto: CreateUserDto): Promise<User> {
     const user = await this.userRepository.create(dto);
     const acticationLink = uuid.v4();
     await user.update({ acticationLink });
@@ -20,7 +20,7 @@ export class UserService {
     return user;
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { email },
       include: { all: true },

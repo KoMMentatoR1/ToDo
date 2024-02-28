@@ -32,11 +32,8 @@ const PasswordInput: FC<PasswordInputComponent> = ({label, password, errors}) =>
                     return i
                 }
             }
-            return {state: false, message: ""}
         }
-        else {
-            return {state: false, message: ""}
-        }   
+        return {state: false, message: ""}  
     }
 
     const error = hasError()
