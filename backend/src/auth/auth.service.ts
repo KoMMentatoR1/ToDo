@@ -4,22 +4,19 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { MailService } from 'src/mail/mail.service';
+import { TokenService } from 'src/token/token.service';
 import { CreateUserDto } from 'src/user/dto/create_user.dto';
 import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
-import { User } from 'src/models/user.model';
-import { MailService } from 'src/mail/mail.service';
-import { SwitchPassDto } from './dto/switchPass.dto';
 import { newPassDto } from './dto/newPass.dto';
 import { OutputUserDto } from './dto/outputUser.dto';
-import { TokenService } from 'src/token/token.service';
+import { SwitchPassDto } from './dto/switchPass.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
     private readonly mailService: MailService,
     private readonly tokenService: TokenService,
   ) {}
@@ -32,21 +29,16 @@ export class AuthService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    const hashPassword = await bcrypt.hash(userDto.password, 5)
+    const hashPassword = await bcrypt.hash(userDto.password, 5);
     const user = await this.userService.createUser({
       ...userDto,
       password: hashPassword,
     });
-    
-    return {
-      token: await this.generateToken(user),
-      user: {...new OutputUserDto(user)}
-    }
-  }
 
-  private async generateToken(user: User) {
-    const payload = { email: user.email, id: user.id, isActivated: user.isActivated };
-    return this.jwtService.sign(payload, { secret: process.env.PRIVATE_KEY })
+    return {
+      token: await this.tokenService.generateToken(user),
+      user: { ...new OutputUserDto(user) },
+    };
   }
 
   private async validateUser(userDto: CreateUserDto) {
@@ -65,27 +57,27 @@ export class AuthService {
 
   async login(dto: CreateUserDto) {
     const user = await this.validateUser(dto);
-    const token = await this.generateToken(user)
-    
-    return{
+    const token = await this.tokenService.generateToken(user);
+
+    return {
       token,
-      user: {...new OutputUserDto(user)}
+      user: { ...new OutputUserDto(user) },
     };
   }
 
   async switchPass(dto: SwitchPassDto) {
-    const user = await this.userService.getUserById(dto.id)    
+    const user = await this.userService.getUserById(dto.id);
 
     const isPassEquils = await bcrypt.compare(dto.password, user.password);
 
     if (!isPassEquils) {
-      throw new HttpException(
-        'Неверный старый пароль',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException('Неверный старый пароль', HttpStatus.BAD_REQUEST);
     }
 
-    const isNewPassEquils = await bcrypt.compare(dto.newPassword, user.password);
+    const isNewPassEquils = await bcrypt.compare(
+      dto.newPassword,
+      user.password,
+    );
 
     if (isNewPassEquils) {
       throw new HttpException(
@@ -98,7 +90,7 @@ export class AuthService {
     await user.update({ password: hashPassword });
 
     const userDto = new OutputUserDto(user);
-    const tokens = this.generateToken(user);
+    const tokens = this.tokenService.generateToken(user);
 
     return {
       ...tokens,
@@ -132,7 +124,7 @@ export class AuthService {
     await user.update({ password: hashPassword });
 
     const userDto = new OutputUserDto(user);
-    const tokens = this.generateToken(user);
+    const tokens = this.tokenService.generateToken(user);
 
     return {
       ...tokens,
@@ -144,19 +136,19 @@ export class AuthService {
     return this.userService.activate(link);
   }
 
-  async refresh(authorization: string) { 
-    const decoded = await this.tokenService.getDataFromToken(authorization)
+  async refresh(authorization: string) {
+    const decoded = await this.tokenService.getDataFromToken(authorization);
 
-    const user = await this.userService.getUserById(decoded.id)
-    if(user.isActivated != decoded.isActivated) {
-      decoded.isActivated = user.isActivated
+    const user = await this.userService.getUserById(decoded.id);
+    if (user.isActivated != decoded.isActivated) {
+      decoded.isActivated = user.isActivated;
     }
-      
+
     return {
-      token: authorization.split(" ")[1],
+      token: authorization.split(' ')[1],
       user: {
-        ...new OutputUserDto(decoded)
-      }
-    }
+        ...new OutputUserDto(decoded),
+      },
+    };
   }
 }
